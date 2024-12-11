@@ -4,14 +4,14 @@ Documentation=https://csj.lol
 After=network.target
 
 [Service]
-ExecStart=/usr/local/bin/npm run dev
-WorkingDirectory=/var/lib/node/url
-Restart=always
 RestartSec=10
-StandardOutput=syslog
+Restart=always
 StandardError=syslog
+StandardOutput=syslog
 SyslogIdentifier=csj-lol
-#Environment=NODE_ENV=production PORT=2550
+Environment="PORT=2550" "NODE_ENV=production" "MONGODB_URI="
+WorkingDirectory=/var/lib/node/url
+ExecStart=/usr/local/bin/npm run dev
 
 [Install]
 WantedBy=multi-user.target
