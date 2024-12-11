@@ -1,0 +1,19 @@
+[Unit]
+Description=csj-lol url shortner
+Documentation=https://csj.lol
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/npm run dev
+WorkingDirectory=/var/lib/node/url
+Restart=always
+RestartSec=10
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=csj-lol
+#User=<alternate user>
+#Group=<alternate group>
+#Environment=NODE_ENV=production PORT=2550
+
+[Install]
+WantedBy=multi-user.target
