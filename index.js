@@ -105,7 +105,7 @@ app.post(
         req.headers['user-agent'] &&
         req.headers['user-agent'].includes('curl')
       ) {
-        res.status(200).send(`https://${urlHost}/${getSlug}\n`);
+        res.status(200).send(`https://${urlHost}/${slug}\n`);
       } else {
         resres.status(200).json(created);
       }
