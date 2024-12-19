@@ -77,11 +77,11 @@ app.post(
   async (req, res, next) => {
     const getAgent = req.headers['user-agent'];
     if (getAgent.includes('curl')) {
-      setAgent = 'consoleClient';
+      const setAgent = 'consoleClient';
     } else if (getAgent.includes('wget')) {
-      setAgent = 'consoleClient';
+      const setAgent = 'consoleClient';
     } else if (getAgent.includes('httpie')) {
-      setAgent = 'consoleClient';
+      const setAgent = 'consoleClient';
     }
     console.log(setAgent);
     let { slug, url } = req.body;
@@ -130,7 +130,7 @@ app.use((error, req, res, next) => {
   }
   console.log(JSON.stringify(error.message));
   if (setAgent) {
-    res.json(JSON.stringify(error.message));
+    res.send(JSON.stringify(error.message));
   } else {
     res.json({
       message: error.message,
