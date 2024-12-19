@@ -120,7 +120,7 @@ app.post(
       next(error);
     }
     if (set_error_message) {
-      const set_error_message = set_error_message;
+      const get_error_message = set_error_message || '';
     }
   }
 );
@@ -135,7 +135,7 @@ app.use((error, req, res, next) => {
     res.status(500);
   }
   const slug = slug;
-  const error_message = set_error_message || error.message;
+  const error_message = get_error_message || error.message;
   console.log(error_message);
   if (setAgent) {
     res.send(error_message || `${slug} in use. 🍔`);
