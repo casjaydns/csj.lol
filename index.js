@@ -114,6 +114,7 @@ app.post(
 );
 
 app.use((req, res, next) => {
+  const getAgent = req.headers['user-agent'];
   if (getAgent.includes('curl')) {
     setAgent = 'consoleClient';
   } else if (getAgent.includes('wget')) {
@@ -129,6 +130,7 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
+  const getAgent = req.headers['user-agent'];
   if (getAgent.includes('curl')) {
     setAgent = 'consoleClient';
   } else if (getAgent.includes('wget')) {
