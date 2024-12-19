@@ -39,6 +39,7 @@ app.use(morgan('common'));
 app.use(express.json());
 app.use(express.static('./public'));
 
+const getAgent = req.headers['user-agent'];
 const notFoundPath = path.join(__dirname, 'public/404.html');
 
 app.get('/:id', async (req, res, next) => {
@@ -101,7 +102,6 @@ app.post(
         slug,
       };
       const created = await urls.insert(newUrl);
-      const getAgent = req.headers['user-agent'];
       if (getAgent.includes('curl')) {
         res.status(200).send(`https://${urlHost}/${slug}\n`);
       } else if (getAgent.includes('wget')) {
