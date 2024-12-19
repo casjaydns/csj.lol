@@ -107,7 +107,7 @@ app.post(
       ) {
         res.status(200).send(`https://${urlHost}/${slug}\n`);
       } else {
-        resres.status(200).json(created);
+        res.status(200).json(created);
       }
     } catch (error) {
       next(error);
