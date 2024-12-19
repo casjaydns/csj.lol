@@ -103,7 +103,7 @@ app.post(
       const created = await urls.insert(newUrl);
       if (
         req.headers['user-agent'] &&
-        req.headers['user-agent'].includes('curl')
+        req.headers['user-agent'].includes('curl||wget||httpie')
       ) {
         res.status(200).send(`https://${urlHost}/${slug}\n`);
       } else {
