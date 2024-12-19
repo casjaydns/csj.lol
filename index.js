@@ -86,7 +86,6 @@ app.post(
     console.log(setAgent);
     let { slug, url } = req.body;
     try {
-      const slug = slug.toLowerCase();
       await schema.validate({
         slug,
         url,
@@ -94,6 +93,7 @@ app.post(
       if (url.includes(urlHost)) {
         throw new Error(`Error: Adding ${urlHost} is not supported. 🛑`);
       }
+      const slug = slug.toLowerCase();
       if (!slug) {
         slug = nanoid(6).toLowerCase();
       } else {
