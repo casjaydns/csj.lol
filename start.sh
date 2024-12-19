@@ -56,10 +56,13 @@ i | install)
   npm i -d
   ;;
 dev | development)
+  shift 1
+  [ "$1" = "remote" ] && shift 1 && (while :; do git pull -q; done) &
   export NODE_ENV=development
   npm run dev
   ;;
 prod | production)
+  shift 1
   npm run start
   ;;
 *)
