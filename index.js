@@ -125,7 +125,6 @@ app.post(
   }
 );
 
-const slug = slug;
 app.use((req, res, next) => {
   res.status(404).sendFile(notFoundPath);
 });
@@ -135,6 +134,7 @@ app.use((error, req, res, next) => {
   } else {
     res.status(500);
   }
+  const slug = slug;
   const error_message = set_error_message || error.message;
   console.log(error_message);
   if (setAgent) {
