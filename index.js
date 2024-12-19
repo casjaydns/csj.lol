@@ -76,7 +76,13 @@ app.post(
   }),
   async (req, res, next) => {
     const getAgent = req.headers['user-agent'];
-    const setAgent = getAgent.includes('curl||wget||httpie') || null;
+    if (getAgent.includes('curl')) {
+      setAgent = 'consoleClient';
+    } else if (getAgent.includes('wget')) {
+      setAgent = 'consoleClient';
+    } else if (getAgent.includes('httpie')) {
+      setAgent = 'consoleClient';
+    }
     console.log(setAgent);
     let { slug, url } = req.body;
     try {
@@ -103,11 +109,7 @@ app.post(
         slug,
       };
       const created = await urls.insert(newUrl);
-      if (getAgent.includes('curl')) {
-        res.status(200).send(`https://${urlHost}/${slug}\n`);
-      } else if (getAgent.includes('wget')) {
-        res.status(200).send(`https://${urlHost}/${slug}\n`);
-      } else if (getAgent.includes('httpie')) {
+      if (setAgent) {
         res.status(200).send(`https://${urlHost}/${slug}\n`);
       } else {
         res.status(200).json(created);
