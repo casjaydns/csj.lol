@@ -142,7 +142,7 @@ app.use((error, req, res, next) => {
     res.status(500);
   }
   if (setAgent) {
-    res.json(error.message);
+    res.json({ error: error.message });
   } else {
     res.json({
       message: error.message,
