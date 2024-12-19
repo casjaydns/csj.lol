@@ -107,7 +107,7 @@ app.post(
       } else {
         res
           .status(200)
-          .send(JSON.stringify({ link: `https://${urlHost}/${slug}` }))
+          .json({ link: `https://${urlHost}/${slug}` })
           .write('\n');
       }
     } catch (error) {
