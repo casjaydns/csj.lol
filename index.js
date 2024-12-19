@@ -127,7 +127,7 @@ app.post(
   }
 );
 
-const error_message = get_error_message || '';
+const error_message = get_error_message || error.message;
 app.use((req, res, next) => {
   res.status(404).sendFile(notFoundPath);
 });
