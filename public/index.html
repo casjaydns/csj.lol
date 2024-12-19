@@ -47,8 +47,8 @@
       </header>
     </div>
 
-    <main id="app">
-      <div class="v-100">
+    <div class="v-100">
+      <main id="app">
         <form class="form" v-if="formVisible" @submit.prevent="createUrl()">
           <div v-if="error" class="error">{{error}}</div>
           <input
@@ -77,8 +77,8 @@
             <h3 class="center"><a :href="created">{{created}}</a></h3>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
 
     <!-- Begin Footer -->
     <br />
