@@ -77,11 +77,11 @@ app.post(
   async (req, res, next) => {
     const getAgent = req.headers['user-agent'];
     if (getAgent.includes('curl')) {
-      const setAgent = 'consoleClient';
+      setAgent = 'consoleClient';
     } else if (getAgent.includes('wget')) {
-      const setAgent = 'consoleClient';
+      setAgent = 'consoleClient';
     } else if (getAgent.includes('httpie')) {
-      const setAgent = 'consoleClient';
+      setAgent = 'consoleClient';
     }
     console.log(setAgent);
     let { slug, url } = req.body;
