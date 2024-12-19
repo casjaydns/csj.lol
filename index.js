@@ -130,13 +130,10 @@ app.use((error, req, res, next) => {
   } else {
     res.status(500);
   }
-  res.json(
-    {
-      message: error.message,
-      stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack,
-    },
-    '\n'
-  );
+  res.json({
+    message: error.message,
+    stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack,
+  });
 });
 
 app.listen(port, () => {
