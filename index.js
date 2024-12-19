@@ -107,7 +107,8 @@ app.post(
       ) {
         res.status(200).send(`https://${urlHost}/${slug}\n`);
       } else {
-        res.status(200).json(created).append('\n');
+        jsonFormat = `${created}\n`;
+        res.status(200).json(jsonFormat);
       }
     } catch (error) {
       next(error);
