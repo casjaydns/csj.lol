@@ -130,7 +130,7 @@ app.use((error, req, res, next) => {
   }
   console.log(JSON.stringify(error.message));
   if (setAgent) {
-    res.send(JSON.stringify(error.message));
+    res.json(JSON.stringify(error.message));
   } else {
     res.json({
       message: error.message,
