@@ -91,7 +91,7 @@ app.post(
         url,
       });
       if (url.includes(urlHost)) {
-        error.message = `Error: Adding ${urlHost} is not supported. 🛑`;
+        error_message = `Error: Adding ${urlHost} is not supported. 🛑`;
         throw new Error(`Error: Adding ${urlHost} is not supported. 🛑`);
       }
       if (!slug) {
@@ -101,7 +101,7 @@ app.post(
           slug,
         });
         if (existing) {
-          error.message = `${existing} in use. 🍔`;
+          error_message = `${existing} in use. 🍔`;
           throw new Error(`${existing} in use. 🍔`);
         }
       }
@@ -133,7 +133,7 @@ app.use((error, req, res, next) => {
   }
   console.log(error.message);
   res.json({
-    message: error.message,
+    message: error_message || error.message,
     stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack,
   });
 });
