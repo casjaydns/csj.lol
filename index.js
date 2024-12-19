@@ -130,7 +130,7 @@ app.use((error, req, res, next) => {
   }
   console.log(error.message);
   if (setAgent) {
-    res.send({ message: `${error.message}\n` });
+    res.send(`${slug} in use. 🍔`);
   } else {
     res.json({
       message: error.message,
