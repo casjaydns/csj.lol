@@ -105,10 +105,7 @@ app.post(
       if (!setAgent) {
         res.status(200).json(created);
       } else {
-        res
-          .status(200)
-          .json({ link: `https://${urlHost}/${slug}` })
-          .write('\n');
+        res.status(200).json({ link: `https://${urlHost}/${slug}` } + '\n');
       }
     } catch (error) {
       next(error);
@@ -147,7 +144,7 @@ app.use((error, req, res, next) => {
     res.status(500);
   }
   if (setAgent) {
-    res.send(JSON.stringify({ error: error.message })).write('\n');
+    res.send(JSON.stringify({ error: error.message }) + '\n');
   } else {
     res.json({
       message: error.message,
