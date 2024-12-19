@@ -110,7 +110,7 @@ app.post(
       };
       const created = await urls.insert(newUrl);
       if (setAgent) {
-        res.status(200).json(`https://${urlHost}/${slug}\n`).replace('"');
+        res.status(200).send(`https://${urlHost}/${slug}\n`).replace('"');
       } else {
         res.status(200).json(created);
       }
@@ -130,7 +130,7 @@ app.use((error, req, res, next) => {
   }
   console.log(JSON.stringify(error.message));
   if (setAgent) {
-    res.send(JSON.stringify(error.message));
+    res.json(JSON.stringify(error.message));
   } else {
     res.json({
       message: error.message,
