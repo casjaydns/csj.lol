@@ -101,7 +101,14 @@ app.post(
         slug,
       };
       const created = await urls.insert(newUrl);
-      res.json(created);
+      if (
+        req.headers['user-agent'] &&
+        req.headers['user-agent'].includes('curl')
+      ) {
+        res.status(200).send(`https://${urlHost}/${getSlug}\n`);
+      } else {
+        resres.status(200).json(created);
+      }
     } catch (error) {
       next(error);
     }
