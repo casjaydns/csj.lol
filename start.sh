@@ -57,7 +57,13 @@ i | install)
   ;;
 dev | development)
   shift 1
-  [ "$1" = "remote" ] && shift 1 && (while :; do git pull -q; done) &
+  if [ "$1" = "remote" ]; then
+    shift 1
+    while :; do
+      git pull
+      sleep 10
+    done &
+  fi
   export NODE_ENV=development
   npm run dev
   ;;
