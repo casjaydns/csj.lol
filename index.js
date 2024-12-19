@@ -102,10 +102,10 @@ app.post(
         slug,
       };
       const created = await urls.insert(newUrl);
-      if (setAgent) {
-        res.status(200).json(`link: https://${urlHost}/${slug}`).write('\n');
-      } else {
+      if (!setAgent) {
         res.status(200).json(created);
+      } else {
+        res.status(200).json({ link: `https://${urlHost}/${slug}` + '\n' });
       }
     } catch (error) {
       next(error);
