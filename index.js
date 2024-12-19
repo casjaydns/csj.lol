@@ -124,8 +124,8 @@ app.post(
 app.use((req, res, next) => {
   res.status(404).sendFile(notFoundPath);
 });
-const error_message = error_message || error.message;
 app.use((error, req, res, next) => {
+  const error_message = error_message || error.message;
   if (error.status) {
     res.status(error.status);
   } else {
