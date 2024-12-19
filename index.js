@@ -39,10 +39,7 @@ app.use(morgan('common'));
 app.use(express.json());
 app.use(express.static('./public'));
 
-const getAgent = req.headers['user-agent'];
 const notFoundPath = path.join(__dirname, 'public/404.html');
-const setAgent = getAgent.includes('curl||wget||httpie') || null;
-console.log(setAgent);
 app.get('/:id', async (req, res, next) => {
   const { id: slug } = req.params;
   try {
@@ -78,6 +75,9 @@ app.post(
     max: 3,
   }),
   async (req, res, next) => {
+    const getAgent = req.headers['user-agent'];
+    const setAgent = getAgent.includes('curl||wget||httpie') || null;
+    console.log(setAgent);
     let { slug, url } = req.body;
     try {
       await schema.validate({
