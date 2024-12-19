@@ -24,7 +24,7 @@
     <title>URL Shortner</title>
   </head>
 
-  <body>
+  <body class="text-center center">
     <!-- Nav -->
     <navBarMenu>
       <!-- Top Navigation Menu -->
@@ -48,7 +48,7 @@
     </div>
 
     <main id="app">
-      <div class="text-center center">
+      <div>
         <div class="v-100">
           <form class="form" v-if="formVisible" @submit.prevent="createUrl()">
             <div v-if="error" class="error">{{error}}</div>
