@@ -9,9 +9,10 @@ Restart=always
 StandardError=syslog
 StandardOutput=syslog
 SyslogIdentifier=csj-lol
-Environment="PORT=2550" "NODE_ENV=production" "MONGODB_URI="
-WorkingDirectory=/var/lib/node/url
-ExecStart=/usr/local/bin/npm run dev
+WorkingDirectory=/var/lib/node/csj-lol
+EnvironmentFile=/var/lib/node/csj-lol/.env
+ExecStartPre=/var/lib/node/csj-lol/start.sh i
+ExecStart=/var/lib/node/csj-lol/start.sh production
 
 [Install]
 WantedBy=multi-user.target

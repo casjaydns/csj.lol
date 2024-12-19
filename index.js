@@ -13,7 +13,7 @@ require('dotenv').config({
   path: './.env',
 });
 
-const port = process.env.PORT || '1337';
+const port = process.env.PORT || '2550';
 const urlHost = process.env.URLHOST || 'localhost';
 const node_Mode = process.env.NODE_ENV || 'development';
 const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/shrtnr';
