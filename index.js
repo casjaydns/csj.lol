@@ -91,7 +91,7 @@ app.post(
         url,
       });
       if (url.includes(urlHost)) {
-        error_message = `Error: Adding ${urlHost} is not supported. 🛑`;
+        const error_message = `Error: Adding ${urlHost} is not supported. 🛑`;
         throw new Error(`Error: Adding ${urlHost} is not supported. 🛑`);
       }
       if (!slug) {
@@ -101,7 +101,7 @@ app.post(
           slug,
         });
         if (existing) {
-          error_message = `${existing} in use. 🍔`;
+          const error_message = `${existing} in use. 🍔`;
           throw new Error(`${existing} in use. 🍔`);
         }
       }
@@ -131,7 +131,7 @@ app.use((error, req, res, next) => {
   } else {
     res.status(500);
   }
-  console.log(error.message);
+  console.log(error_message || error.message);
   res.json({
     message: error_message || error.message,
     stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack,
