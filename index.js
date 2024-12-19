@@ -144,8 +144,8 @@ app.use((error, req, res, next) => {
     res.status(500);
   }
   if (setAgent) {
-    const message = { message: error.message };
-    res.json(message + '\n');
+    const message = JSON.stringify({ message: error.message });
+    res.send(message + '\n');
   } else {
     res.json({
       message: error.message,
