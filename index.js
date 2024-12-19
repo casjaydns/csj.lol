@@ -29,6 +29,7 @@ urls.createIndex(
   }
 );
 
+let error_message = '';
 const app = express();
 app.enable('trust proxy');
 
@@ -119,7 +120,7 @@ app.post(
     } catch (error) {
       next(error);
     }
-    const error_message = error_message;
+    let error_message = error_message;
   }
 );
 app.use((req, res, next) => {
