@@ -103,10 +103,7 @@ app.post(
       };
       const created = await urls.insert(newUrl);
       if (setAgent) {
-        res
-          .status(200)
-          .json(JSON.stringify(`link: https://${urlHost}/${slug}`))
-          .write('\n');
+        res.status(200).json(`link: https://${urlHost}/${slug}`).write('\n');
       } else {
         res.status(200).json(created);
       }
