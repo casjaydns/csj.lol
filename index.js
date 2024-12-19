@@ -91,7 +91,6 @@ app.post(
         url,
       });
       if (url.includes(urlHost)) {
-        const error_message = `Error: Adding ${urlHost} is not supported. 🛑`;
         throw new Error(`Error: Adding ${urlHost} is not supported. 🛑`);
       }
       if (!slug) {
@@ -101,7 +100,6 @@ app.post(
           slug,
         });
         if (existing) {
-          const error_message = `${existing} in use. 🍔`;
           throw new Error(`${existing} in use. 🍔`);
         }
       }
@@ -125,17 +123,20 @@ app.use((req, res, next) => {
   res.status(404).sendFile(notFoundPath);
 });
 app.use((error, req, res, next) => {
-  const error_message = error_message || error.message;
   if (error.status) {
     res.status(error.status);
   } else {
     res.status(500);
   }
-  console.log(error_message);
-  res.json({
-    message: error_message,
-    stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack,
-  });
+  console.log(error);
+  if (setAgent) {
+    res.send(error);
+  } else {
+    res.json({
+      message: error.message,
+      stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack,
+    });
+  }
 });
 
 app.listen(port, () => {
