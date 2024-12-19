@@ -106,7 +106,6 @@ app.post(
           throw new Error(`${existing} in use. 🍔`);
         }
       }
-      set_error_message = set_error_message || '';
       slug = slug.toLowerCase();
       const newUrl = {
         url,
@@ -121,9 +120,14 @@ app.post(
     } catch (error) {
       next(error);
     }
-    const error_message = set_error_message || '';
+    if (set_error_message) {
+      const set_error_message = set_error_message;
+    }
+    const get_error_message = set_error_message;
   }
 );
+
+const error_message = get_error_message || '';
 app.use((req, res, next) => {
   res.status(404).sendFile(notFoundPath);
 });
