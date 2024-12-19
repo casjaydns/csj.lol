@@ -41,7 +41,8 @@ app.use(express.static('./public'));
 
 const getAgent = req.headers['user-agent'];
 const notFoundPath = path.join(__dirname, 'public/404.html');
-
+const setAgent = getAgent.includes('curl||wget||httpie') || null;
+console.log(setAgent);
 app.get('/:id', async (req, res, next) => {
   const { id: slug } = req.params;
   try {
