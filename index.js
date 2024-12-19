@@ -110,7 +110,7 @@ app.post(
       };
       const created = await urls.insert(newUrl);
       if (setAgent) {
-        res.status(200).send(`https://${urlHost}/${slug}\n`);
+        res.status(200).json(JSON.stringify(`https://${urlHost}/${slug}\n`));
       } else {
         res.status(200).json(created);
       }
