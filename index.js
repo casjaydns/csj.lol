@@ -101,7 +101,7 @@ app.post(
           slug,
         });
         if (existing) {
-          throw new Error(`${existing} is in use. 🍔`);
+          throw new Error(existing + 'is in use. 🍔');
         }
       }
       const newUrl = {
