@@ -91,6 +91,7 @@ app.post(
         url,
       });
       if (url.includes(urlHost)) {
+        error_message = `Error: Adding ${urlHost} is not supported. 🛑`;
         throw new Error(`Error: Adding ${urlHost} is not supported. 🛑`);
       }
       if (!slug) {
@@ -100,6 +101,7 @@ app.post(
           slug,
         });
         if (existing) {
+          error_message = `${existing} in use. 🍔`;
           throw new Error(`${existing} in use. 🍔`);
         }
       }
@@ -119,6 +121,7 @@ app.post(
     }
   }
 );
+const error_message = error_message;
 app.use((req, res, next) => {
   res.status(404).sendFile(notFoundPath);
 });
