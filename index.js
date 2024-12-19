@@ -91,6 +91,7 @@ app.post(
         url,
       });
       if (url.includes(urlHost)) {
+        error.message = `Error: Adding ${urlHost} is not supported. 🛑`;
         throw new Error(`Error: Adding ${urlHost} is not supported. 🛑`);
       }
       if (!slug) {
@@ -100,6 +101,7 @@ app.post(
           slug,
         });
         if (existing) {
+          error.message = `${existing} in use. 🍔`;
           throw new Error(`${existing} in use. 🍔`);
         }
       }
