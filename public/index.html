@@ -50,34 +50,32 @@
     <main id="app">
       <div class="text-center center">
         <div class="v-100">
-          <div>
-            <form class="form" v-if="formVisible" @submit.prevent="createUrl()">
-              <div v-if="error" class="error">{{error}}</div>
-              <input
-                class="input"
-                type="text"
-                v-model="url"
-                name="url"
-                id="url"
-                placeholder="enter a url"
-              />
-              <input
-                class="input"
-                type="text"
-                v-model="slug"
-                name="slug"
-                id="slug"
-                placeholder="enter a slug"
-              />
-              <button type="submit" class="create">create</button>
-            </form>
-            <div v-if="created">
-              <div class="created">
-                <p class="created"></p>
-                <h1 class="center">Your short url is:</h1>
-                <br />
-                <h3 class="center"><a :href="created">{{created}}</a></h3>
-              </div>
+          <form class="form" v-if="formVisible" @submit.prevent="createUrl()">
+            <div v-if="error" class="error">{{error}}</div>
+            <input
+              class="input"
+              type="text"
+              v-model="url"
+              name="url"
+              id="url"
+              placeholder="enter a url"
+            />
+            <input
+              class="input"
+              type="text"
+              v-model="slug"
+              name="slug"
+              id="slug"
+              placeholder="enter a slug"
+            />
+            <button type="submit" class="create">create</button>
+          </form>
+          <div v-if="created">
+            <div class="created">
+              <p class="created"></p>
+              <h1 class="center">Your short url is:</h1>
+              <br />
+              <h3 class="center"><a :href="created">{{created}}</a></h3>
             </div>
           </div>
         </div>
