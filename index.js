@@ -83,7 +83,7 @@ app.post(
         url,
       });
       if (url.includes(urlHost)) {
-        throw new Error('Stop it. 🛑');
+        throw new Error(`Error: Adding ${urlHost} is not supported. 🛑`);
       }
       if (!slug) {
         slug = nanoid(5);
@@ -92,7 +92,7 @@ app.post(
           slug,
         });
         if (existing) {
-          throw new Error('Slug in use. 🍔');
+          throw new Error(`${existing} in use. 🍔`);
         }
       }
       slug = slug.toLowerCase();
@@ -125,6 +125,6 @@ app.use((error, req, res, next) => {
 });
 
 app.listen(port, () => {
-  console.log(`Listening on ${port} in ${node_Mode} mode`);
   console.log(`Connected to ${mongoURI}`);
+  console.log(`Listening on ${port} in ${node_Mode} mode`);
 });
