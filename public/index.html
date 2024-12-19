@@ -83,7 +83,7 @@
     <br />
     <br />
     <hr />
-    <div class="footer text-center" align="center">
+    <div class="footer" align="center">
       <br />
       <!-- Begin Social Links -->
       <div class="share-buttons" align="center">
@@ -192,32 +192,34 @@
       <!-- Eng Google Track -->
 
       <!-- Begin EU compliant -->
-      <script
-        src="//cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"
-        data-cfasync="false"
-      ></script>
-      <script>
-        window.cookieconsent.initialise({
-          palette: {
-            popup: {
-              background: '#64386b',
-              text: '#ffcdfd',
+      <div class="text-center center">
+        <script
+          src="//cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"
+          data-cfasync="false"
+        ></script>
+        <script>
+          window.cookieconsent.initialise({
+            palette: {
+              popup: {
+                background: '#64386b',
+                text: '#ffcdfd',
+              },
+              button: {
+                background: '#f8a8ff',
+                text: '#3f0045',
+              },
             },
-            button: {
-              background: '#f8a8ff',
-              text: '#3f0045',
+            theme: 'edgeless',
+            content: {
+              message:
+                'This site uses cookie and in accordance with the EU GDPR<br />law this message is being displayed.<br />',
+              dismiss: 'dismiss',
+              link: 'CasjaysDev Privacy Policy',
+              href: '//casjaysdev.pro/policy',
             },
-          },
-          theme: 'edgeless',
-          content: {
-            message:
-              'This site uses cookie and in accordance with the EU GDPR<br />law this message is being displayed.<br />',
-            dismiss: 'dismiss',
-            link: 'CasjaysDev Privacy Policy',
-            href: '//casjaysdev.pro/policy',
-          },
-        });
-      </script>
+          });
+        </script>
+      </div>
       <br />
       <!-- End EU compliant -->
 
