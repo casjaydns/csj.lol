@@ -130,15 +130,10 @@ app.use((error, req, res, next) => {
   } else {
     res.status(500);
   }
-  if (setAgent) {
-    consoleMessage = JSON.stringify(`${error.message}\n`);
-    res.send(consoleMessage);
-  } else {
-    res.json({
-      message: error.message,
-      stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack,
-    });
-  }
+  res.json({
+    message: error.message,
+    stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack,
+  });
 });
 
 app.listen(port, () => {
