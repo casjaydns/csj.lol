@@ -105,7 +105,8 @@ app.post(
       if (setAgent) {
         res
           .status(200)
-          .json(JSON.stringify(`link: https://${urlHost}/${slug}` + '\n'));
+          .json(JSON.stringify(`link: https://${urlHost}/${slug}`))
+          .write('\n');
       } else {
         res.status(200).json(created);
       }
