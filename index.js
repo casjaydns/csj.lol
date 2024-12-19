@@ -93,7 +93,7 @@ app.post(
           slug,
         });
         if (existing) {
-          throw new Error(`Slug ${slug} is in use. 🍔`);
+          throw new Error(`Slug http://${urlHost}/${slug} is in use. 🍔`);
         }
       }
       slug = slug.toLowerCase();
@@ -105,7 +105,7 @@ app.post(
       if (!setAgent) {
         res.status(200).json(created);
       } else {
-        res.status(200).send(`https://${urlHost}/${slug}` + '\n');
+        res.status(200).send(`http://${urlHost}/${slug}` + '\n');
       }
     } catch (error) {
       next(error);
