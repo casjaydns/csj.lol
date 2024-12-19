@@ -101,10 +101,12 @@ app.post(
         slug,
       };
       const created = await urls.insert(newUrl);
-      if (
-        req.headers['user-agent'] &&
-        req.headers['user-agent'].includes('curl||wget||httpie')
-      ) {
+      const getAgent = req.headers['user-agent'];
+      if (getAgent.includes('curl')) {
+        res.status(200).send(`https://${urlHost}/${slug}\n`);
+      } else if (getAgent.includes('wget')) {
+        res.status(200).send(`https://${urlHost}/${slug}\n`);
+      } else if (getAgent.includes('httpie')) {
         res.status(200).send(`https://${urlHost}/${slug}\n`);
       } else {
         res.status(200).json(created);
