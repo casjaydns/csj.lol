@@ -86,6 +86,7 @@ app.post(
     console.log(setAgent);
     let { slug, url } = req.body;
     try {
+      const slug = slug.toLowerCase();
       await schema.validate({
         slug,
         url,
@@ -94,16 +95,15 @@ app.post(
         throw new Error(`Error: Adding ${urlHost} is not supported. 🛑`);
       }
       if (!slug) {
-        slug = nanoid(5);
+        slug = nanoid(6).toLowerCase();
       } else {
         const existing = await urls.findOne({
           slug,
         });
         if (existing) {
-          throw new Error(`${existing} in use. 🍔`);
+          throw new Error(`${existing} is in use. 🍔`);
         }
       }
-      slug = slug.toLowerCase();
       const newUrl = {
         url,
         slug,
@@ -131,9 +131,7 @@ app.use((error, req, res, next) => {
     res.status(500);
   }
   if (setAgent) {
-    res.json({
-      message: error.message,
-    });
+    res.send(error.message);
   } else {
     res.json({
       message: error.message,
