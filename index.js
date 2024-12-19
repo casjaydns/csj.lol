@@ -93,7 +93,7 @@ app.post(
           slug,
         });
         if (existing) {
-          throw new Error(`${existing} in use. 🍔`);
+          throw new Error(`${slug} in use. 🍔`);
         }
       }
       slug = slug.toLowerCase();
