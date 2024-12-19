@@ -93,10 +93,10 @@ app.post(
       if (url.includes(urlHost)) {
         throw new Error(`Error: Adding ${urlHost} is not supported. 🛑`);
       }
-      const slug = slug.toLowerCase();
       if (!slug) {
         slug = nanoid(6).toLowerCase();
       } else {
+        const slug = slug.toLowerCase();
         const existing = await urls.findOne({
           slug,
         });
