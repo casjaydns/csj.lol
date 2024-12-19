@@ -39,7 +39,6 @@ app.use(morgan('common'));
 app.use(express.json());
 app.use(express.static('./public'));
 
-let set_error_message = '';
 const notFoundPath = path.join(__dirname, 'public/404.html');
 app.get('/:id', async (req, res, next) => {
   const { id: slug } = req.params;
@@ -123,11 +122,9 @@ app.post(
     if (set_error_message) {
       const set_error_message = set_error_message;
     }
-    const get_error_message = set_error_message;
   }
 );
 
-const error_message = get_error_message || error.message;
 app.use((req, res, next) => {
   res.status(404).sendFile(notFoundPath);
 });
@@ -137,7 +134,8 @@ app.use((error, req, res, next) => {
   } else {
     res.status(500);
   }
-  console.log(error.message);
+  const error_message = set_error_message || error.message;
+  console.log(error_message);
   if (setAgent) {
     res.send(error_message || `${slug} in use. 🍔`);
   } else {
