@@ -29,7 +29,6 @@ urls.createIndex(
   }
 );
 
-let error_message = '';
 const app = express();
 app.enable('trust proxy');
 
@@ -40,6 +39,7 @@ app.use(morgan('common'));
 app.use(express.json());
 app.use(express.static('./public'));
 
+let set_error_message = '';
 const notFoundPath = path.join(__dirname, 'public/404.html');
 app.get('/:id', async (req, res, next) => {
   const { id: slug } = req.params;
@@ -92,7 +92,7 @@ app.post(
         url,
       });
       if (url.includes(urlHost)) {
-        error_message = `Error: Adding ${urlHost} is not supported. 🛑`;
+        set_error_message = `Error: Adding ${urlHost} is not supported. 🛑`;
         throw new Error(`Error: Adding ${urlHost} is not supported. 🛑`);
       }
       if (!slug) {
@@ -102,10 +102,11 @@ app.post(
           slug,
         });
         if (existing) {
-          error_message = `${existing} in use. 🍔`;
+          set_error_message = `${existing} in use. 🍔`;
           throw new Error(`${existing} in use. 🍔`);
         }
       }
+      set_error_message = set_error_message || '';
       slug = slug.toLowerCase();
       const newUrl = {
         url,
@@ -120,7 +121,7 @@ app.post(
     } catch (error) {
       next(error);
     }
-    const error_message = error_message || '';
+    const error_message = set_error_message || '';
   }
 );
 app.use((req, res, next) => {
