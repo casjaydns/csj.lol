@@ -107,7 +107,8 @@ app.post(
       } else {
         res
           .status(200)
-          .send(JSON.stringify({ link: `https://${urlHost}/${slug}` + '\n' }));
+          .send(JSON.stringify({ link: `https://${urlHost}/${slug}` }))
+          .send('\n');
       }
     } catch (error) {
       next(error);
@@ -146,7 +147,7 @@ app.use((error, req, res, next) => {
     res.status(500);
   }
   if (setAgent) {
-    res.send(JSON.stringify({ error: error.message }));
+    res.send(JSON.stringify({ error: error.message })).send('\n');
   } else {
     res.json({
       message: error.message,
