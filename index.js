@@ -94,16 +94,16 @@ app.post(
         throw new Error(`Error: Adding ${urlHost} is not supported. 🛑`);
       }
       if (!slug) {
-        slug = nanoid(6).toLowerCase();
+        slug = nanoid(5);
       } else {
-        const slug = slug.toLowerCase();
         const existing = await urls.findOne({
           slug,
         });
         if (existing) {
-          throw new Error(existing + 'is in use. 🍔');
+          throw new Error(`${existing} in use. 🍔`);
         }
       }
+      slug = slug.toLowerCase();
       const newUrl = {
         url,
         slug,
@@ -130,14 +130,10 @@ app.use((error, req, res, next) => {
   } else {
     res.status(500);
   }
-  if (setAgent) {
-    res.send(error.message);
-  } else {
-    res.json({
-      message: error.message,
-      stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack,
-    });
-  }
+  res.json({
+    message: error.message,
+    stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack,
+  });
 });
 
 app.listen(port, () => {
