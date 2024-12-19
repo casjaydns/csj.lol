@@ -120,7 +120,7 @@ app.post(
     } catch (error) {
       next(error);
     }
-    let error_message = error_message || '';
+    const error_message = error_message || '';
   }
 );
 app.use((req, res, next) => {
