@@ -87,7 +87,7 @@
         <br />
         <br />
         <hr />
-        <div class="footer" align="center">
+        <div class="footer text-center center" align="center">
           <br />
           <!-- Begin Social Links -->
           <div class="share-buttons" align="center">
@@ -211,34 +211,32 @@
           <!-- End Github ribbon -->
 
           <!-- Begin EU compliant -->
-          <center>
-            <script
-              src="//cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"
-              data-cfasync="false"
-            ></script>
-            <script>
-              window.cookieconsent.initialise({
-                palette: {
-                  popup: {
-                    background: '#64386b',
-                    text: '#ffcdfd',
-                  },
-                  button: {
-                    background: '#f8a8ff',
-                    text: '#3f0045',
-                  },
+          <script
+            src="//cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"
+            data-cfasync="false"
+          ></script>
+          <script>
+            window.cookieconsent.initialise({
+              palette: {
+                popup: {
+                  background: '#64386b',
+                  text: '#ffcdfd',
                 },
-                theme: 'edgeless',
-                content: {
-                  message:
-                    'This site uses cookie and in accordance with the EU GDPR<br />law this message is being displayed.<br />',
-                  dismiss: 'dismiss',
-                  link: 'CasjaysDev Privacy Policy',
-                  href: '//casjaysdev.pro/policy',
+                button: {
+                  background: '#f8a8ff',
+                  text: '#3f0045',
                 },
-              });
-            </script>
-          </center>
+              },
+              theme: 'edgeless',
+              content: {
+                message:
+                  'This site uses cookie and in accordance with the EU GDPR<br />law this message is being displayed.<br />',
+                dismiss: 'dismiss',
+                link: 'CasjaysDev Privacy Policy',
+                href: '//casjaysdev.pro/policy',
+              },
+            });
+          </script>
           <br />
           <!-- End EU compliant -->
 
