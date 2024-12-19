@@ -119,7 +119,6 @@ app.post(
     }
   }
 );
-console.log(error.message);
 app.use((req, res, next) => {
   res.status(404).sendFile(notFoundPath);
 });
@@ -130,6 +129,7 @@ app.use((error, req, res, next) => {
   } else {
     res.status(500);
   }
+  console.log(error.message);
   res.json({
     message: error.message,
     stack: process.env.NODE_ENV === 'production' ? '🥞' : error.stack,
