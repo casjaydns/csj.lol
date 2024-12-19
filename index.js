@@ -20,14 +20,7 @@ const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/shrtnr';
 
 const db = monk(mongoURI);
 const urls = db.get('urls');
-urls.createIndex(
-  {
-    slug: 1,
-  },
-  {
-    unique: true,
-  }
-);
+urls.createIndex({ slug: 1 }, { unique: true });
 
 const app = express();
 app.enable('trust proxy');
@@ -40,6 +33,7 @@ app.use(express.json());
 app.use(express.static('./public'));
 
 const notFoundPath = path.join(__dirname, 'public/404.html');
+
 app.get('/:id', async (req, res, next) => {
   const { id: slug } = req.params;
   try {
@@ -83,7 +77,6 @@ app.post(
     } else if (getAgent.includes('httpie')) {
       setAgent = 'consoleClient';
     }
-    console.log(setAgent);
     let { slug, url } = req.body;
     try {
       await schema.validate({
@@ -91,7 +84,6 @@ app.post(
         url,
       });
       if (url.includes(urlHost)) {
-        set_error_message = `Error: Adding ${urlHost} is not supported. 🛑`;
         throw new Error(`Error: Adding ${urlHost} is not supported. 🛑`);
       }
       if (!slug) {
@@ -101,7 +93,6 @@ app.post(
           slug,
         });
         if (existing) {
-          set_error_message = `${existing} in use. 🍔`;
           throw new Error(`${existing} in use. 🍔`);
         }
       }
@@ -119,26 +110,39 @@ app.post(
     } catch (error) {
       next(error);
     }
-    if (set_error_message) {
-      const get_error_message = set_error_message || '';
-    }
   }
 );
 
 app.use((req, res, next) => {
-  res.status(404).sendFile(notFoundPath);
+  if (getAgent.includes('curl')) {
+    setAgent = 'consoleClient';
+  } else if (getAgent.includes('wget')) {
+    setAgent = 'consoleClient';
+  } else if (getAgent.includes('httpie')) {
+    setAgent = 'consoleClient';
+  }
+  if (setAgent) {
+    res.status(404).send('File not found 😠');
+  } else {
+    res.status(404).sendFile(notFoundPath);
+  }
 });
+
 app.use((error, req, res, next) => {
+  if (getAgent.includes('curl')) {
+    setAgent = 'consoleClient';
+  } else if (getAgent.includes('wget')) {
+    setAgent = 'consoleClient';
+  } else if (getAgent.includes('httpie')) {
+    setAgent = 'consoleClient';
+  }
   if (error.status) {
     res.status(error.status);
   } else {
     res.status(500);
   }
-  const slug = slug;
-  const error_message = get_error_message || error.message;
-  console.log(error_message);
   if (setAgent) {
-    res.send(error_message || `${slug} in use. 🍔`);
+    res.json(error.message);
   } else {
     res.json({
       message: error.message,
