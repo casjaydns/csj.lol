@@ -131,7 +131,7 @@ app.use((error, req, res, next) => {
     res.status(500);
   }
   if (setAgent) {
-    res.send(JSON.stringify(`${error.message}\n`));
+    res.body(JSON.stringify(`${error.message}\n`));
   } else {
     res.json({
       message: error.message,
