@@ -76,7 +76,8 @@ app.post(
       setAgent = 'consoleClient';
     } else if (getAgent.includes('httpie')) {
       setAgent = 'consoleClient';
-    }
+    } else
+      setAgent = ''
     let { slug, url } = req.body;
     try {
       await schema.validate({
