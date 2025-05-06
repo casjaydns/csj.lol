@@ -47,7 +47,9 @@ START_SH_EXIT_STATUS=0
 export NODE_ENV=production
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 if [ -n "$(which fnm)" ]; then eval "$(fnm env)"; fi
-if [ -f "$PWD/.env" ]; then . "$PWD/.env"; fi
+if [ -f "$SCRIPT_SRC_DIR/.env" ]; then
+  . "$SCRIPT_SRC_DIR/.env"
+fi
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Main application
 case "$1" in
