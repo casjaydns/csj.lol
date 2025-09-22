@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-dracula-bg text-dracula-fg;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-dracula-green text-dracula-bg font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transform transition hover:-translate-y-0.5 duration-200 cursor-pointer;
+  }
+
+  .btn-secondary {
+    @apply bg-dracula-purple text-dracula-fg font-semibold py-2 px-4 rounded-lg hover:bg-dracula-pink transition duration-200;
+  }
+
+  .input-field {
+    @apply bg-transparent border-b-2 border-dracula-fg text-dracula-fg placeholder-dracula-comment py-2 px-1 w-full focus:outline-none focus:border-dracula-green transition duration-200 text-center text-lg;
+  }
+
+  .nav-link {
+    @apply text-dracula-fg hover:text-dracula-green px-4 py-2 transition duration-200;
+  }
+
+  .nav-link-active {
+    @apply bg-dracula-green text-dracula-bg px-4 py-2 rounded;
+  }
+
+  .error-message {
+    @apply bg-dracula-red text-dracula-fg px-4 py-3 rounded-lg mb-4 text-center;
+  }
+
+  .card {
+    @apply bg-dracula-current rounded-lg p-6 shadow-lg;
+  }
+
+  .pagination-btn {
+    @apply px-3 py-1 mx-1 rounded bg-dracula-current text-dracula-fg hover:bg-dracula-purple transition duration-200;
+  }
+
+  .pagination-btn-active {
+    @apply px-3 py-1 mx-1 rounded bg-dracula-purple text-dracula-fg;
+  }
+
+  .pagination-btn-disabled {
+    @apply px-3 py-1 mx-1 rounded bg-dracula-current text-dracula-comment cursor-not-allowed opacity-50;
+  }
+}

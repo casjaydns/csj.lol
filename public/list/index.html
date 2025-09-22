@@ -3,198 +3,188 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/darkly/bootstrap.min.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css"
-    />
     <link rel="stylesheet" type="text/css" href="../css/styles.css" />
     <script src="https://unpkg.com/vue@2.6.11/dist/vue.js" defer></script>
-    <script src="../js/app.js" defer></script>
-    <title>URL Shortner</title>
+    <script src="../js/list.js" defer></script>
+    <title>URL List - URL Shortner</title>
   </head>
 
-  <body class="text-center center">
+  <body class="min-h-screen flex flex-col">
     <!-- Nav -->
-    <navBarMenu>
-      <!-- Top Navigation Menu -->
-      <div class="topnav">
-        <div class="topnav_logo">
-          <a href="/" class="">Home </a>
-        </div>
-        <div class="topnav_links">
-          <a class="active" href="/list">list </a>
-          <a class="" href="/domains">domains </a>
-          <a class="" href="/about">About </a>
+    <nav class="bg-dracula-current shadow-lg">
+      <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center py-4">
+          <div class="flex items-center">
+            <a href="/" class="nav-link font-semibold text-lg">Home</a>
+          </div>
+          <div class="flex items-center space-x-1">
+            <a href="/list" class="nav-link-active">List</a>
+            <a href="/domains" class="nav-link">Domains</a>
+            <a href="/about" class="nav-link">About</a>
+          </div>
         </div>
       </div>
-    </navBarMenu>
+    </nav>
     <!-- end nav -->
 
-    <div>
-      <header>
-        <img src="/favicon.ico" alt="logo" width="128" height="128" /> <br />
-      </header>
-    </div>
-
-    <main id="app">
-      <div class="v-100">
-        <h1>Coming Soon</h1>
+    <main id="app" class="flex-grow container mx-auto px-4 py-8">
+      <div class="text-center mb-8">
+        <img src="/favicon.ico" alt="logo" class="w-24 h-24 mx-auto mb-4" />
+        <h1 class="text-3xl md:text-4xl font-bold text-dracula-purple mb-2">Shortened URLs</h1>
+        <p class="text-dracula-comment">Browse all shortened links</p>
       </div>
 
-      <!-- Begin Footer -->
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <hr />
-      <div class="footer" align="center">
-        <br />
-        <!-- Begin Social Links -->
-        <div class="share-buttons" align="center">
-          <a href="https://github.com/casjay" target="_blank" title="Github">
-            <img
-              alt="Github"
-              src="https://casjaysdev-sites.github.io/static/default-icons/social/github-48x48.png"
-            />
-          </a>
-          <br />
+      <!-- Loading State -->
+      <div v-if="loading" class="text-center py-8">
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-dracula-purple"></div>
+        <p class="mt-4 text-dracula-comment">Loading URLs...</p>
+      </div>
+
+      <!-- Error State -->
+      <div v-if="error" class="error-message max-w-2xl mx-auto">
+        {{error}}
+      </div>
+
+      <!-- Sort and Filter Controls -->
+      <div v-if="!loading && !error" class="mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-4">
+          <label class="text-dracula-comment">Sort by:</label>
+          <select v-model="sort" @change="loadUrls()" class="bg-dracula-current text-dracula-fg px-4 py-2 rounded border border-dracula-comment focus:border-dracula-purple focus:outline-none">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+          </select>
         </div>
-        <br />
-        <!-- End Social Links-->
-
-        <!-- Begin Casjays Developments Footer -->
-        Copyright 1999 - 2021
-        <br />
-        <a href="https://casjay.pro" target="_blank">Casjays Developments</a>
-        and
-        <a href="https://malaks-us.github.io/jason" target="_blank">
-          Jason M. Hempstead-Malak
-        </a>
-        <br />
-        Hosting by
-        <a href="https://casjay.pro/hosting" target="_blank">
-          Casjays Developments: Hosting
-        </a>
-        <br />
-        and powered by
-        <a href="https://casjaysdev.pro" target="_blank">CasjaysDev.pro</a>
-        <br />
-        <br />
-        <a href="https://www.patreon.com/casjay" target="_blank">
-          <img
-            src="https://img.shields.io/badge/patreon-donate-orange.svg"
-            border="0"
-            alt="Casjays Patreon Page"
-          />
-        </a>
-
-        <a href="https://www.paypal.me/casjaysdev" target="_blank">
-          <img
-            src="https://img.shields.io/badge/Donate-PayPal-green.svg?casjay@yahoo.com"
-            alt="Casjays Paypal Page"
-          />
-        </a>
-
-        <br />
-        <br />
-        <a href="https://help.casjay.pro" target="_blank">CasjaysDev Support</a>
-        |
-        <a href="https://bugs.casjay.pro" target="_blank">CasjaysDev Bugs</a>
-        <br />
-        <a href="https://uptime.servicestat.us" target="_blank">System Status</a>
-        |
-        <a href="https://services.servicestat.us" target="_blank">Service Status</a
-        ><br />
-        <a href="https://casjaysdev.pro/domains.html" target="_blank">
-          Casjays Developments Domains
-        </a>
-        <br />
-        <br />
-        Casjays Developments privacy policy can be found at
-        <br />
-        <a href="https://casjaysdev.pro/policy/" target="_blank">
-          https://casjaysdev.pro/policy
-        </a>
-        <br />
-        <!-- End Casjays Developments Footer -->
-
-        <!-- Theme powered -->
-        <div class="text-center" style="color: royalblue">
-          <br />
-          Made with 💜💜💜💜💜💜 by
-          <br />
-          <a href="http://github.com/casjay" target="_blank" rel="noopener">
-            Jason M. Hempstead (Casjay)
-          </a>
-          <br />
-          This site is powered by
-          <a href="https://github.com/casjay-coffee/csj.lol" target="_blank">
-            open source
-          </a>
-          project
+        <div class="flex items-center gap-4">
+          <label class="text-dracula-comment">Per page:</label>
+          <select v-model.number="perPage" @change="changePerPage" class="bg-dracula-current text-dracula-fg px-4 py-2 rounded border border-dracula-comment focus:border-dracula-purple focus:outline-none">
+            <option :value="25">25</option>
+            <option :value="50">50</option>
+            <option :value="100">100</option>
+          </select>
         </div>
-        <br />
-        <!-- End Theme powered -->
+      </div>
 
-        <!-- Begin Google Track -->
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=UA-936146-1"
-        ></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag() {
-            dataLayer.push(arguments);
-          }
-          gtag('js', new Date());
-          gtag('config', 'UA-936146-1');
-        </script>
-        <!-- Eng Google Track -->
-
-        <!-- Begin EU compliant -->
-        <div class="text-center align-items-center fs-3">
-          <script
-            src="//cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"
-            data-cfasync="false"
-          ></script>
-          <script>
-            window.cookieconsent.initialise({
-              palette: {
-                popup: {
-                  background: '#64386b',
-                  text: '#ffcdfd',
-                },
-                button: {
-                  background: '#f8a8ff',
-                  text: '#3f0045',
-                },
-              },
-              theme: 'edgeless',
-              content: {
-                message:
-                  'This site uses cookie and in accordance with the EU GDPR<br />law this message is being displayed.<br />',
-                dismiss: 'dismiss',
-                link: 'CasjaysDev Privacy Policy',
-                href: '//casjaysdev.pro/policy',
-              },
-            });
-          </script>
-          <br />
+      <!-- URL List -->
+      <div v-if="!loading && urls.length > 0" class="space-y-4 mb-8">
+        <div v-for="url in urls" :key="url._id" class="card hover:shadow-xl transition-shadow duration-200">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex-grow overflow-hidden">
+              <div class="mb-2">
+                <span class="text-dracula-comment text-sm">Short URL:</span>
+                <a :href="'/' + url.slug" target="_blank" class="ml-2 text-dracula-cyan hover:text-dracula-green transition duration-200 break-all">
+                  {{baseUrl}}/{{url.slug}}
+                </a>
+              </div>
+              <div>
+                <span class="text-dracula-comment text-sm">Original URL:</span>
+                <a :href="url.url" target="_blank" class="ml-2 text-dracula-purple hover:text-dracula-pink transition duration-200 break-all">
+                  {{url.url}}
+                </a>
+              </div>
+              <div v-if="url._id" class="mt-2">
+                <span class="text-dracula-comment text-xs">Created: {{formatDate(url._id)}}</span>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <button @click="copyToClipboard(baseUrl + '/' + url.slug)" class="btn-secondary text-sm">
+                Copy
+              </button>
+            </div>
+          </div>
         </div>
-        <!-- End EU compliant -->
+      </div>
 
-        <br />
-        <br />
-        <br />
-        <!-- End Footer -->
+      <!-- Empty State -->
+      <div v-if="!loading && urls.length === 0" class="text-center py-8">
+        <p class="text-dracula-comment text-lg">No shortened URLs yet.</p>
+        <a href="/" class="btn-primary inline-block mt-4">Create your first short URL</a>
+      </div>
+
+      <!-- Pagination -->
+      <div v-if="!loading && pagination.totalPages > 1" class="flex flex-wrap justify-center items-center gap-2 mt-8">
+        <button
+          @click="goToPage(pagination.page - 1)"
+          :disabled="!pagination.hasPrev"
+          :class="pagination.hasPrev ? 'pagination-btn' : 'pagination-btn-disabled'">
+          Previous
+        </button>
+
+        <template v-for="pageNum in displayedPages">
+          <button
+            v-if="pageNum !== '...'"
+            :key="'page-' + pageNum"
+            @click="goToPage(pageNum)"
+            :class="pageNum === pagination.page ? 'pagination-btn-active' : 'pagination-btn'">
+            {{pageNum}}
+          </button>
+          <span v-else :key="'dots-' + pageNum" class="text-dracula-comment px-2">...</span>
+        </template>
+
+        <button
+          @click="goToPage(pagination.page + 1)"
+          :disabled="!pagination.hasNext"
+          :class="pagination.hasNext ? 'pagination-btn' : 'pagination-btn-disabled'">
+          Next
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div v-if="!loading && pagination.totalUrls > 0" class="text-center mt-8 text-dracula-comment text-sm">
+        Showing {{(pagination.page - 1) * pagination.limit + 1}} - {{Math.min(pagination.page * pagination.limit, pagination.totalUrls)}} of {{pagination.totalUrls}} URLs
       </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-dracula-current mt-auto">
+      <div class="container mx-auto px-4 py-8">
+        <div class="text-center">
+          <div class="mb-4">
+            <a href="https://github.com/casjay" target="_blank" title="Github">
+              <img alt="Github" src="https://casjaysdev-sites.github.io/static/default-icons/social/github-48x48.png" class="inline-block" />
+            </a>
+          </div>
+
+          <p class="text-dracula-comment text-sm mb-2">
+            Copyright 1999 - 2024
+            <a href="https://casjay.pro" target="_blank" class="text-dracula-purple hover:text-dracula-pink transition duration-200">Casjays Developments</a>
+            and
+            <a href="https://malaks-us.github.io/jason" target="_blank" class="text-dracula-purple hover:text-dracula-pink transition duration-200">
+              Jason M. Hempstead-Malak
+            </a>
+          </p>
+
+          <p class="text-dracula-comment text-sm mb-4">
+            Hosting by
+            <a href="https://casjay.pro/hosting" target="_blank" class="text-dracula-purple hover:text-dracula-pink transition duration-200">
+              Casjays Developments: Hosting
+            </a>
+            and powered by
+            <a href="https://casjaysdev.pro" target="_blank" class="text-dracula-purple hover:text-dracula-pink transition duration-200">CasjaysDev.pro</a>
+          </p>
+
+          <div class="flex justify-center gap-4 mb-4">
+            <a href="https://www.patreon.com/casjay" target="_blank">
+              <img src="https://img.shields.io/badge/patreon-donate-orange.svg" alt="Casjays Patreon Page" />
+            </a>
+            <a href="https://www.paypal.me/casjaysdev" target="_blank">
+              <img src="https://img.shields.io/badge/Donate-PayPal-green.svg" alt="Casjays Paypal Page" />
+            </a>
+          </div>
+
+          <div class="text-dracula-purple text-sm">
+            Made with 💜 by
+            <a href="http://github.com/casjay" target="_blank" rel="noopener" class="text-dracula-cyan hover:text-dracula-green transition duration-200">
+              Jason M. Hempstead (Casjay)
+            </a>
+            <br />
+            This site is powered by
+            <a href="https://github.com/casjaydns/csj.lol" target="_blank" class="text-dracula-cyan hover:text-dracula-green transition duration-200">
+              open source
+            </a>
+            project
+          </div>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>

@@ -26,13 +26,50 @@ const app = express();
 app.enable('trust proxy');
 
 app.use(cors());
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false
+}));
 app.use(morgan('common'));
 
 app.use(express.json());
 app.use(express.static('./public'));
 
 const notFoundPath = path.join(__dirname, 'public/404.html');
+
+app.get('/api/urls', async (req, res, next) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 50;
+    const sort = req.query.sort || 'newest';
+    const skip = (page - 1) * limit;
+
+    const sortOrder = sort === 'oldest' ? 1 : -1;
+
+    const totalUrls = await urls.count();
+    const totalPages = Math.ceil(totalUrls / limit);
+
+    const urlList = await urls.find({}, {
+      limit,
+      skip,
+      sort: { _id: sortOrder }
+    });
+
+    res.json({
+      urls: urlList,
+      pagination: {
+        page,
+        limit,
+        totalPages,
+        totalUrls,
+        hasNext: page < totalPages,
+        hasPrev: page > 1
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
 app.get('/:id', async (req, res, next) => {
   const { id: slug } = req.params;
@@ -62,11 +99,13 @@ app.post(
   slowDown({
     windowMs: 10 * 1000,
     delayAfter: 1,
-    delayMs: 500,
+    delayMs: () => 500,
   }),
   rateLimit({
-    windowMs: 10 * 100,
+    windowMs: 10 * 1000,
     max: 3,
+    standardHeaders: true,
+    legacyHeaders: false,
   }),
   async (req, res, next) => {
     const getAgent = req.headers['user-agent'];

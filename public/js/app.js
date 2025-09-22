@@ -33,5 +33,12 @@ const app = new Vue({
         this.error = result.message;
       }
     },
+    resetForm() {
+      this.url = '';
+      this.slug = '';
+      this.error = '';
+      this.formVisible = true;
+      this.created = null;
+    },
   },
 });
