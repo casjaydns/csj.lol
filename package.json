@@ -7,9 +7,9 @@
     "node": ">=18"
   },
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "build-css": "tailwindcss -i ./public/css/input.css -o ./public/css/styles.css --watch"
+    "build-css": "tailwindcss -i ./public/css/input.css -o ./public/css/styles.css --watch",
+    "start": "tailwindcss -i ./public/css/input.css -o ./public/css/styles.css;node index.js",
+    "dev": "tailwindcss -i ./public/css/input.css -o ./public/css/styles.css;nodemon index.js"
   },
   "keywords": [],
   "author": "CasjaysDev <git-admin@casjaysdev.pro> (https://github.com/casjay)",
