@@ -4,7 +4,17 @@
       "Bash(npm install)",
       "Bash(npx tailwindcss:*)",
       "Bash(curl:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(lsof:*)",
+      "Bash(xargs kill:*)",
+      "Bash(for file in public/list/index.html public/domains/index.html public/about/index.html)",
+      "Bash(do sed -i 's|<a href=\"\"/about\"\" class=\"\"\\([^\"\"]*\\)\"\">About</a>|<a href=\"\"/about\"\" class=\"\"\\1\"\">About</a>\\n            <a href=\"\"/api\"\" class=\"\"nav-link\"\">API</a>|g' $file)",
+      "Bash(done)",
+      "Bash(pkill:*)",
+      "Bash(awk:*)",
+      "Bash(xargs -r kill -9)",
+      "Bash(kill:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []

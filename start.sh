@@ -67,6 +67,9 @@ dev | development)
     done &
   fi
   export NODE_ENV=development
+  if docker ps -a 2>&1 | grep -qE 'mongo|:27017/'; then
+    docker run --name mongo -d -v /tmp/mongodb:/data/db -p 127.0.0.1:27017:27017 mongo:latest
+  fi
   npm run dev
   ;;
 prod | production)

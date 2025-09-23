@@ -102,18 +102,36 @@ const app = new Vue({
       }
     },
 
-    async copyToClipboard(text) {
+    async copyToClipboard(text, event) {
       try {
-        await navigator.clipboard.writeText(text);
-        const originalText = event.target.textContent;
-        event.target.textContent = 'Copied!';
-        event.target.classList.add('bg-dracula-green');
+        // Fallback for older browsers
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          // Fallback method using textarea
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        }
+
+        // Visual feedback
+        const button = event.currentTarget;
+        const originalHTML = button.innerHTML;
+        button.innerHTML = '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>';
+        button.classList.add('text-dracula-green');
         setTimeout(() => {
-          event.target.textContent = originalText;
-          event.target.classList.remove('bg-dracula-green');
+          button.innerHTML = originalHTML;
+          button.classList.remove('text-dracula-green');
         }, 2000);
       } catch (err) {
         console.error('Failed to copy:', err);
+        // Fallback alert
+        alert('Press Ctrl+C to copy: ' + text);
       }
     }
   }

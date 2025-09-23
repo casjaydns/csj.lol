@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="../css/styles.css" />
+    <script src="../js/nav.js" defer></script>
+    <title>API Documentation - URL Shortner</title>
+    <style>
+      .method-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: 0.375rem;
+        font-weight: 600;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+      }
+      .method-post { background-color: #50fa7b; color: #282a36; }
+      .method-get { background-color: #8be9fd; color: #282a36; }
+      .method-put { background-color: #ffb86c; color: #282a36; }
+      .method-delete { background-color: #ff5555; color: #f8f8f2; }
+
+      .endpoint-card {
+        border: 1px solid #44475a;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .endpoint-card.expanded {
+        box-shadow: 0 0 20px rgba(189, 147, 249, 0.2);
+      }
+
+      .endpoint-header {
+        padding: 1rem;
+        background-color: #44475a;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: background-color 0.2s ease;
+      }
+
+      .endpoint-header:hover {
+        background-color: #4a4d5e;
+      }
+
+      .endpoint-content {
+        padding: 1.5rem;
+        background-color: #282a36;
+        display: none;
+      }
+
+      .endpoint-card.expanded .endpoint-content {
+        display: block;
+      }
+
+      .endpoint-url {
+        font-family: 'Courier New', monospace;
+        font-size: 1rem;
+        color: #f8f8f2;
+        margin-left: 1rem;
+      }
+
+      .expand-icon {
+        transition: transform 0.3s ease;
+      }
+
+      .endpoint-card.expanded .expand-icon {
+        transform: rotate(90deg);
+      }
+
+      .param-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+      }
+
+      .param-table th {
+        background-color: #44475a;
+        padding: 0.75rem;
+        text-align: left;
+        color: #bd93f9;
+        font-weight: 600;
+      }
+
+      .param-table td {
+        padding: 0.75rem;
+        border-bottom: 1px solid #44475a;
+        color: #f8f8f2;
+      }
+
+      .param-name {
+        color: #8be9fd;
+        font-family: 'Courier New', monospace;
+      }
+
+      .param-type {
+        color: #ff79c6;
+        font-size: 0.875rem;
+      }
+
+      .param-required {
+        color: #ff5555;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
+      .param-optional {
+        color: #50fa7b;
+        font-size: 0.75rem;
+      }
+
+      .code-block {
+        background-color: #1e1f29;
+        border: 1px solid #44475a;
+        border-radius: 0.375rem;
+        padding: 1rem;
+        overflow-x: auto;
+        position: relative;
+      }
+
+      .copy-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background-color: #44475a;
+        border: none;
+        color: #f8f8f2;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        font-size: 0.75rem;
+        transition: background-color 0.2s ease;
+      }
+
+      .copy-btn:hover {
+        background-color: #6272a4;
+      }
+
+      .copy-btn.copied {
+        background-color: #50fa7b;
+        color: #282a36;
+      }
+
+      .tab-buttons {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #44475a;
+      }
+
+      .tab-button {
+        padding: 0.5rem 1rem;
+        background: none;
+        border: none;
+        color: #f8f8f2;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+      }
+
+      .tab-button:hover {
+        color: #bd93f9;
+      }
+
+      .tab-button.active {
+        color: #bd93f9;
+        border-bottom-color: #bd93f9;
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .response-code {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        font-weight: 600;
+        font-size: 0.875rem;
+        margin-right: 0.5rem;
+      }
+
+      .code-200 { background-color: #50fa7b; color: #282a36; }
+      .code-201 { background-color: #50fa7b; color: #282a36; }
+      .code-302 { background-color: #8be9fd; color: #282a36; }
+      .code-400 { background-color: #ffb86c; color: #282a36; }
+      .code-404 { background-color: #ffb86c; color: #282a36; }
+      .code-429 { background-color: #ff79c6; color: #282a36; }
+      .code-500 { background-color: #ff5555; color: #f8f8f2; }
+    </style>
+  </head>
+
+  <body class="min-h-screen flex flex-col">
+    <!-- Nav -->
+    <nav class="bg-dracula-current shadow-lg">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-wrap justify-between items-center py-4">
+          <div class="flex items-center">
+            <a href="/" class="nav-link font-semibold text-lg">Home</a>
+          </div>
+          <!-- Mobile Menu Button -->
+          <button id="mobile-menu-button" class="md:hidden text-dracula-fg hover:text-dracula-purple transition duration-200">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+          <!-- Navigation Links -->
+          <div id="mobile-menu" class="hidden md:flex items-center space-x-1 w-full md:w-auto mt-4 md:mt-0">
+            <a href="/list" class="nav-link block md:inline-block w-full md:w-auto text-center md:text-left">List</a>
+            <a href="/domains" class="nav-link block md:inline-block w-full md:w-auto text-center md:text-left">Domains</a>
+            <a href="/about" class="nav-link block md:inline-block w-full md:w-auto text-center md:text-left">About</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- end nav -->
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+      <div class="text-center mb-8">
+        <img src="/favicon.ico" alt="logo" class="w-24 h-24 mx-auto mb-4" />
+        <h1 class="text-3xl md:text-4xl font-bold text-dracula-purple mb-4">API Documentation</h1>
+        <p class="text-dracula-comment mb-2">REST API v1.1.0</p>
+        <div class="flex justify-center gap-4 text-sm">
+          <div class="bg-dracula-current px-3 py-1 rounded">
+            Base URL: <span id="baseUrl" class="text-dracula-cyan font-mono"></span>
+          </div>
+          <a href="/api/docs" target="_blank" class="bg-dracula-current px-3 py-1 rounded text-dracula-green hover:text-dracula-cyan transition">
+            View JSON
+          </a>
+        </div>
+      </div>
+
+      <div class="max-w-5xl mx-auto">
+        <!-- API Info -->
+        <div class="card mb-8">
+          <h2 class="text-2xl font-semibold text-dracula-green mb-4">Overview</h2>
+          <p class="text-dracula-fg mb-4">
+            The URL Shortener API provides programmatic access to create and manage short URLs.
+            All responses are in JSON format unless the request is made from a console client.
+          </p>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <h3 class="text-lg font-semibold text-dracula-pink mb-2">Authentication</h3>
+              <p class="text-dracula-comment">No authentication required for public endpoints</p>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-dracula-pink mb-2">Rate Limiting</h3>
+              <p class="text-dracula-comment">3 requests per 10 seconds for URL creation</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Endpoints Section -->
+        <div class="mb-8">
+          <h2 class="text-2xl font-semibold text-dracula-green mb-4">Endpoints</h2>
+
+          <!-- Create URL Endpoint -->
+          <div class="endpoint-card" id="endpoint-create">
+            <div class="endpoint-header" onclick="toggleEndpoint('endpoint-create')">
+              <div class="flex items-center">
+                <span class="method-badge method-post">POST</span>
+                <span class="endpoint-url">/url</span>
+              </div>
+              <div class="flex items-center gap-4">
+                <span class="text-dracula-comment">Create short URL</span>
+                <svg class="expand-icon w-5 h-5 text-dracula-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+            <div class="endpoint-content">
+              <p class="text-dracula-comment mb-4">Create a new shortened URL with an optional custom slug.</p>
+
+              <h3 class="text-lg font-semibold text-dracula-pink mb-3">Request Body</h3>
+              <table class="param-table">
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Required</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="param-name">url</span></td>
+                    <td><span class="param-type">string</span></td>
+                    <td><span class="param-required">Required</span></td>
+                    <td>The URL to shorten</td>
+                  </tr>
+                  <tr>
+                    <td><span class="param-name">slug</span></td>
+                    <td><span class="param-type">string</span></td>
+                    <td><span class="param-optional">Optional</span></td>
+                    <td>Custom slug for the short URL</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3 class="text-lg font-semibold text-dracula-pink mb-3">Example Request</h3>
+              <div class="tab-buttons">
+                <button class="tab-button active" onclick="switchTab('create', 'curl')">cURL</button>
+                <button class="tab-button" onclick="switchTab('create', 'js')">JavaScript</button>
+                <button class="tab-button" onclick="switchTab('create', 'python')">Python</button>
+              </div>
+
+              <div id="create-curl" class="tab-content active">
+                <div class="code-block">
+                  <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                  <pre class="text-dracula-fg"><code>curl -X POST <span id="curlUrl"></span>/url \
+  -H "Content-Type: application/json" \
+  -d '{"url":"https://github.com/casjay/csj.lol","slug":"github"}'</code></pre>
+                </div>
+              </div>
+
+              <div id="create-js" class="tab-content">
+                <div class="code-block">
+                  <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                  <pre class="text-dracula-fg"><code>const response = await fetch('<span id="jsUrl"></span>/url', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    url: 'https://github.com/casjay/csj.lol',
+    slug: 'github'
+  })
+});
+
+const data = await response.json();</code></pre>
+                </div>
+              </div>
+
+              <div id="create-python" class="tab-content">
+                <div class="code-block">
+                  <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                  <pre class="text-dracula-fg"><code>import requests
+
+response = requests.post(
+    '<span id="pyUrl"></span>/url',
+    json={
+        'url': 'https://github.com/casjay/csj.lol',
+        'slug': 'github'
+    }
+)
+
+data = response.json()</code></pre>
+                </div>
+              </div>
+
+              <h3 class="text-lg font-semibold text-dracula-pink mb-3 mt-4">Responses</h3>
+
+              <div class="mb-4">
+                <span class="response-code code-200">200 OK</span>
+                <span class="text-dracula-comment">Success</span>
+                <div class="code-block mt-2">
+                  <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                  <pre class="text-dracula-fg"><code>{
+  "_id": "507f1f77bcf86cd799439011",
+  "url": "https://github.com/casjay/csj.lol",
+  "slug": "github",
+  "clicks": 0,
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "shortUrl": "<span id="responseUrl"></span>/github"
+}</code></pre>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <span class="response-code code-429">429</span>
+                <span class="text-dracula-comment">Rate Limit Exceeded</span>
+                <div class="code-block mt-2">
+                  <pre class="text-dracula-fg"><code>{
+  "error": "Too many requests, please try again later."
+}</code></pre>
+                </div>
+              </div>
+
+              <div>
+                <span class="response-code code-500">500</span>
+                <span class="text-dracula-comment">Server Error</span>
+                <div class="code-block mt-2">
+                  <pre class="text-dracula-fg"><code>{
+  "message": "Error description",
+  "stack": "Stack trace (development mode only)"
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- List URLs Endpoint -->
+          <div class="endpoint-card" id="endpoint-list">
+            <div class="endpoint-header" onclick="toggleEndpoint('endpoint-list')">
+              <div class="flex items-center">
+                <span class="method-badge method-get">GET</span>
+                <span class="endpoint-url">/api/urls</span>
+              </div>
+              <div class="flex items-center gap-4">
+                <span class="text-dracula-comment">List all URLs</span>
+                <svg class="expand-icon w-5 h-5 text-dracula-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+            <div class="endpoint-content">
+              <p class="text-dracula-comment mb-4">Get a paginated list of all shortened URLs.</p>
+
+              <h3 class="text-lg font-semibold text-dracula-pink mb-3">Query Parameters</h3>
+              <table class="param-table">
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="param-name">page</span></td>
+                    <td><span class="param-type">number</span></td>
+                    <td>1</td>
+                    <td>Page number</td>
+                  </tr>
+                  <tr>
+                    <td><span class="param-name">limit</span></td>
+                    <td><span class="param-type">number</span></td>
+                    <td>50</td>
+                    <td>Items per page (max 100)</td>
+                  </tr>
+                  <tr>
+                    <td><span class="param-name">sort</span></td>
+                    <td><span class="param-type">string</span></td>
+                    <td>newest</td>
+                    <td>Sort order: "newest" or "oldest"</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3 class="text-lg font-semibold text-dracula-pink mb-3">Example Request</h3>
+              <div class="code-block">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre class="text-dracula-fg"><code>curl "<span id="listUrl"></span>/api/urls?page=1&limit=10&sort=newest"</code></pre>
+              </div>
+
+              <h3 class="text-lg font-semibold text-dracula-pink mb-3 mt-4">Response</h3>
+              <div class="mb-4">
+                <span class="response-code code-200">200 OK</span>
+                <div class="code-block mt-2">
+                  <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                  <pre class="text-dracula-fg"><code>{
+  "urls": [
+    {
+      "_id": "507f1f77bcf86cd799439011",
+      "url": "https://github.com/casjay/csj.lol",
+      "slug": "github",
+      "clicks": 42,
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 10,
+    "totalPages": 5,
+    "totalUrls": 50,
+    "hasNext": true,
+    "hasPrev": false
+  }
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Redirect Endpoint -->
+          <div class="endpoint-card" id="endpoint-redirect">
+            <div class="endpoint-header" onclick="toggleEndpoint('endpoint-redirect')">
+              <div class="flex items-center">
+                <span class="method-badge method-get">GET</span>
+                <span class="endpoint-url">/:slug</span>
+              </div>
+              <div class="flex items-center gap-4">
+                <span class="text-dracula-comment">Redirect to original URL</span>
+                <svg class="expand-icon w-5 h-5 text-dracula-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+            <div class="endpoint-content">
+              <p class="text-dracula-comment mb-4">Redirect to the original URL and increment the click counter.</p>
+
+              <h3 class="text-lg font-semibold text-dracula-pink mb-3">Path Parameters</h3>
+              <table class="param-table">
+                <thead>
+                  <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="param-name">slug</span></td>
+                    <td><span class="param-type">string</span></td>
+                    <td>The short URL slug</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3 class="text-lg font-semibold text-dracula-pink mb-3">Example</h3>
+              <div class="code-block">
+                <pre class="text-dracula-fg"><code><span id="redirectUrl"></span>/github
+→ Redirects to → https://github.com/casjay/csj.lol</code></pre>
+              </div>
+
+              <h3 class="text-lg font-semibold text-dracula-pink mb-3 mt-4">Responses</h3>
+              <div class="mb-4">
+                <span class="response-code code-302">302 Found</span>
+                <span class="text-dracula-comment">Redirects to original URL</span>
+              </div>
+              <div>
+                <span class="response-code code-404">404 Not Found</span>
+                <span class="text-dracula-comment">Short URL not found</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="grid md:grid-cols-2 gap-6">
+          <!-- Console Client Support -->
+          <div class="card">
+            <h2 class="text-xl font-semibold text-dracula-green mb-3">Console Client Support</h2>
+            <p class="text-dracula-comment mb-3">
+              The API automatically detects console clients (curl, wget, httpie) and returns plain text responses.
+            </p>
+            <div class="code-block">
+              <pre class="text-dracula-fg text-sm"><code>$ curl -X POST <span id="consoleUrl"></span>/url \
+    -H "Content-Type: application/json" \
+    -d '{"url":"https://github.com"}'
+
+<span id="consoleResponse"></span>/abc12</code></pre>
+            </div>
+          </div>
+
+          <!-- Reverse Proxy Support -->
+          <div class="card">
+            <h2 class="text-xl font-semibold text-dracula-green mb-3">Reverse Proxy Support</h2>
+            <p class="text-dracula-comment mb-3">
+              Full support for reverse proxy deployments with automatic hostname detection.
+            </p>
+            <div class="space-y-1 text-sm">
+              <div><code class="text-dracula-cyan">X-Forwarded-Host</code> - Original hostname</div>
+              <div><code class="text-dracula-cyan">X-Forwarded-Proto</code> - Original protocol</div>
+              <div><code class="text-dracula-cyan">X-Forwarded-For</code> - Client IP address</div>
+              <div><code class="text-dracula-cyan">Host</code> - Fallback hostname</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Status Codes Reference -->
+        <div class="card mt-6">
+          <h2 class="text-xl font-semibold text-dracula-green mb-3">HTTP Status Codes</h2>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div><span class="response-code code-200">200</span> Success</div>
+            <div><span class="response-code code-302">302</span> Redirect</div>
+            <div><span class="response-code code-400">400</span> Bad Request</div>
+            <div><span class="response-code code-404">404</span> Not Found</div>
+            <div><span class="response-code code-429">429</span> Rate Limited</div>
+            <div><span class="response-code code-500">500</span> Server Error</div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dracula-current mt-auto">
+      <div class="container mx-auto px-4 py-8">
+        <div class="text-center">
+          <div class="mb-4">
+            <a href="https://github.com/casjay" target="_blank" title="Github">
+              <img alt="Github" src="https://casjaysdev-sites.github.io/static/default-icons/social/github-48x48.png" class="inline-block" />
+            </a>
+          </div>
+
+          <p class="text-dracula-comment text-sm mb-2">
+            Copyright 1999 - 2024
+            <a href="https://casjay.pro" target="_blank" class="text-dracula-purple hover:text-dracula-pink transition duration-200">Casjays Developments</a>
+            and
+            <a href="https://malaks-us.github.io/jason" target="_blank" class="text-dracula-purple hover:text-dracula-pink transition duration-200">
+              Jason M. Hempstead-Malak
+            </a>
+          </p>
+
+          <p class="text-dracula-comment text-sm mb-4">
+            Hosting by
+            <a href="https://casjay.pro/hosting" target="_blank" class="text-dracula-purple hover:text-dracula-pink transition duration-200">
+              Casjays Developments: Hosting
+            </a>
+            and powered by
+            <a href="https://casjaysdev.pro" target="_blank" class="text-dracula-purple hover:text-dracula-pink transition duration-200">CasjaysDev.pro</a>
+          </p>
+
+          <div class="flex justify-center gap-4 mb-4">
+            <a href="https://www.patreon.com/casjay" target="_blank">
+              <img src="https://img.shields.io/badge/patreon-donate-orange.svg" alt="Casjays Patreon Page" />
+            </a>
+            <a href="https://www.paypal.me/casjaysdev" target="_blank">
+              <img src="https://img.shields.io/badge/Donate-PayPal-green.svg" alt="Casjays Paypal Page" />
+            </a>
+          </div>
+
+          <div class="text-dracula-purple text-sm">
+            Made with 💜 by
+            <a href="http://github.com/casjay" target="_blank" rel="noopener" class="text-dracula-cyan hover:text-dracula-green transition duration-200">
+              Jason M. Hempstead (Casjay)
+            </a>
+            <br />
+            This site is powered by
+            <a href="https://github.com/casjaydns/csj.lol" target="_blank" class="text-dracula-cyan hover:text-dracula-green transition duration-200">
+              open source
+            </a>
+            project
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Set base URL dynamically
+      const baseUrl = window.location.origin;
+      document.getElementById('baseUrl').textContent = baseUrl;
+
+      // Update all URL placeholders
+      const urlElements = ['curlUrl', 'jsUrl', 'pyUrl', 'responseUrl', 'listUrl', 'redirectUrl', 'consoleUrl', 'consoleResponse'];
+      urlElements.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = baseUrl;
+      });
+
+      // Toggle endpoint card expansion
+      function toggleEndpoint(id) {
+        const card = document.getElementById(id);
+        card.classList.toggle('expanded');
+      }
+
+      // Switch between code tabs
+      function switchTab(endpoint, tab) {
+        // Hide all tabs for this endpoint
+        const tabs = document.querySelectorAll(`#${endpoint}-curl, #${endpoint}-js, #${endpoint}-python`);
+        tabs.forEach(t => t.classList.remove('active'));
+
+        // Show selected tab
+        const selectedTab = document.getElementById(`${endpoint}-${tab}`);
+        if (selectedTab) selectedTab.classList.add('active');
+
+        // Update button states
+        const buttons = event.target.parentElement.querySelectorAll('.tab-button');
+        buttons.forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+      }
+
+      // Copy code to clipboard
+      async function copyCode(button) {
+        const codeBlock = button.nextElementSibling;
+        const code = codeBlock.textContent;
+
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(code);
+          } else {
+            const textarea = document.createElement('textarea');
+            textarea.value = code;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+          }
+
+          button.textContent = 'Copied!';
+          button.classList.add('copied');
+
+          setTimeout(() => {
+            button.textContent = 'Copy';
+            button.classList.remove('copied');
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy:', err);
+          alert('Failed to copy. Please select and copy manually.');
+        }
+      }
+
+      // Expand first endpoint by default
+      document.getElementById('endpoint-create').classList.add('expanded');
+    </script>
+  </body>
+</html>

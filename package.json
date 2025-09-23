@@ -15,6 +15,7 @@
   "author": "CasjaysDev <git-admin@casjaysdev.pro> (https://github.com/casjay)",
   "license": "WTFPL",
   "dependencies": {
+    "caniuse-lite": "^1.0.30001743",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.2",
