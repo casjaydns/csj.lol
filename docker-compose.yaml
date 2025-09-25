@@ -1,0 +1,40 @@
+services:
+  app:
+    image: casjaysdevdocker/csjlol:latest
+    ports:
+      - "2550:2550"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongodb:27017/shrtnr
+      - PORT=2550
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+    networks:
+      - url-shortener
+    volumes:
+      - ./public:/app/public:ro
+
+  mongodb:
+    image: mongo:7-jammy
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=shrtnr
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    networks:
+      - url-shortener
+    command: mongod --quiet --logpath /dev/null
+
+volumes:
+  mongodb_data:
+    driver: local
+  mongodb_config:
+    driver: local
+
+networks:
+  url-shortener:
+    driver: bridge
