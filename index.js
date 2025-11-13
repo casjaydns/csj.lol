@@ -14,9 +14,12 @@ require('dotenv').config({
 });
 
 const port = process.env.PORT || '2550';
-const urlHost = process.env.URLHOST || null; // Will auto-detect if not set
+// Support multiple env variable names: URLHOST, HOST, DOMAIN, or HOSTNAME
+const urlHost = process.env.URLHOST || process.env.HOST || process.env.DOMAIN || process.env.HOSTNAME || null; // Will auto-detect if not set
 const node_Mode = process.env.NODE_ENV || 'development';
 const mongoURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/shrtnr';
+const projectName = process.env.PROJECT_NAME || 'shrtnr';
+const projectRepo = process.env.PROJECT_REPO || 'https://github.com/casjaydns/shrtnr';
 
 const db = monk(mongoURI);
 
@@ -49,6 +52,14 @@ app.use(express.json());
 
 const notFoundPath = path.join(__dirname, 'public/404.html');
 
+// Serve project configuration to frontend
+app.get('/api/config', (req, res) => {
+  res.json({
+    projectName,
+    projectRepo
+  });
+});
+
 // Helper function to get the hostname from request
 function getHostname(req) {
   if (urlHost) {
@@ -72,13 +83,15 @@ app.get('/api/docs', (req, res) => {
   const baseUrl = `${protocol}://${detectedHost}`;
 
   // Generate dynamic example URLs
-  const exampleUrl = 'https://github.com/casjay/csj.lol';
+  const exampleUrl = 'https://github.com/casjay';
   const exampleSlug = 'github';
 
   res.json({
-    name: 'URL Shortener API',
+    name: `${projectName} API`,
     version: '1.1.0',
     baseUrl,
+    projectName,
+    projectRepo,
     endpoints: {
       createUrl: {
         method: 'POST',
