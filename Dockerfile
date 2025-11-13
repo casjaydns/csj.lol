@@ -1,6 +1,17 @@
 # Use Node.js 18 alpine image for smaller size
 FROM node:18-alpine
 
+# Install bash and curl for healthcheck and debugging
+RUN apk add --no-cache bash curl
+
+# Environment variables with defaults
+ENV PORT=2550 \
+    URLHOST="localhost" \
+    NODE_ENV="production" \
+    MONGODB_URI="mongodb://localhost:27017/url" \
+    PROJECT_NAME="shrtnr" \
+    PROJECT_REPO="https://github.com/casjaydns/shrtnr"
+
 # Set working directory
 WORKDIR /app
 
@@ -24,12 +35,12 @@ USER appuser
 # Build CSS during image build
 RUN npm run build-css || echo "CSS build failed, continuing..."
 
-# Expose the port the app runs on
-EXPOSE 2550
+# Expose the port the app runs on (configurable via PORT env var)
+EXPOSE ${PORT}
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:2550/api/docs', (res) => process.exit(res.statusCode === 200 ? 0 : 1))"
+# Health check using curl
+HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
+  CMD curl -f http://localhost:${PORT}/api/docs || exit 1
 
-# Start the application
-CMD ["npm", "start"]
+# Start the application with bash
+CMD ["/bin/bash", "-c", "npm start"]
